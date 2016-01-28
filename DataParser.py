@@ -187,7 +187,6 @@ class DataParser:
 						play.half = half
 						play.home_team = home_team
 						play.away_team = away_team
-						#Deal with half, home team, and away team#########
 
 						#Split the line into useful components:
 						play.home_play = cells[0].get_text()
@@ -207,7 +206,7 @@ class DataParser:
 
 			print "SUCCESS"
 			outfilename = filename.split(".")[0] + ".csv"
-			print "WRITING " + outfilename + "...",
+			print "Writing \"" + outfilename + "\"...",
 			self.print_plays(outfilename)
 			print "SUCCESS"
 	
