@@ -3,6 +3,7 @@
 import os
 from bs4 import BeautifulSoup
 import re
+import csv
 
 
 class Play:
@@ -19,18 +20,19 @@ class Play:
 		
 class DataParser:
 	def parse(self):
-		self.plays = []
 		for filename in os.listdir("data"):
+			self.plays = []
+			print "Parsing \"" + filename + "\"...",
 			file = open("data/"+filename)
 			filesoup = BeautifulSoup(file,"html.parser")
 			file.close()
 			
 			#Oddly, this phrase only shows up in the unformatted box scores
-			#Use its presence to determine how to parse the file:
+			#Use its presence to determine how to parse the file
+			#Non-formatted file:
 			if("Official Basketball Box Score" in filesoup.get_text()):
 				box_score_text = filesoup.find("span",class_ = "presmall").get_text()
 				box_score_lines = box_score_text.splitlines()
-				print "Parsing \"" + filename + "\"...",
 				#initialize the parsing for this file:
 				is_play = False
 				half = 0
@@ -102,17 +104,125 @@ class DataParser:
 					if(len(line) > 0 and line[0] == "-"):
 						is_play = True
 						half = half + 1
-			
+			#Formatted file:
+			else:
+				# #Get starters:
+				# starter_tables = 0
+				# #Go through all tables that have "##" to signify a player number column
+				# for table in filesoup.find_all("table"):
+				# 	if ("##" in table.get_text()):
+				# 		starter_tables = starter_tables + 1
+				# 		for row in table.find_all("tr"):
+				# 			cells = row.find_all("td")
+				# 			#check for rows that have c, f, or g (positions) in the position column
+				# 			if(len(cells) > 2 and re.match("[cfg]\s*",cells[2].get_text())):
+				# 				play = Play()
+				# 				if(starter_tables == 1):
+				# 					play.home_string = ""
+				# 					play.away_string = "SUB IN: "
+				# 				else:
+				# 					play.home_string = "SUB IN: "
+				# 					play.away_string = ""
+				# 				play.minute = 20
+				# 				play.second = 0
+
+				# 				print "starter:",cells[1].get_text(),cells[2].get_text()
+						
+				# 	#stop checking after the first 2
+				# 	if (starter_tables >= 2):
+				# 		break
+
+
+				#Get the first half play table:
+				play_table = filesoup.find("span",class_ = "presmall").find_all("table")[0]
+				#initialize the parsing for this file:
+				half = 1
+				home_score = 0
+				away_score = 0
+				home_team = None
+				away_team = None
+				for table_row in play_table.find_all("tr"):
+					#Until home and away teams are determined, look for a line beginning with "HOME TEAM:"
+					if(home_team is None or away_team is None):
+						cells = table_row.find_all("th")
+						if (len(cells) > 0 ):
+							home_string = cells[0].get_text()
+							away_string = cells[4].get_text()
+							home_team = re.split("HOME TEAM:\s*",home_string)[1].upper()
+							away_team = re.split("VISITORS:\s*",away_string)[1].upper()
+
+					cells = table_row.find_all("td")
+					#If the row has 5 cells, parse it as a play:
+					if(len(cells) == 5):
+						play = Play()
+						play.half = half
+						play.home_team = home_team
+						play.away_team = away_team
+						#Deal with half, home team, and away team#########
+
+						#Split the line into useful components:
+						play.home_play = cells[0].get_text()
+						play.away_play = cells[4].get_text()
+						#Split time into minutes and seconds:
+						time = cells[1].get_text().strip().split(":")
+						play.minute = int(time[0])
+						play.second = int(time[1])
+						#Split score into home and away
+						score = cells[2].get_text().strip().split("-")
+						if(len(score) > 1):
+							home_score = int(score[0])
+							away_score = int(score[1])
+						play.home_score = home_score
+						play.away_score = away_score
+						self.plays.append(play)
+
+				#Get the second half play table:
+				play_table = filesoup.find("span",class_ = "presmall").find_all("table")[2]
+				half = 2
+				for table_row in play_table.find_all("tr"):
+					cells = table_row.find_all("td")
+					#If the row has 5 cells, parse it as a play:
+					if(len(cells) == 5):
+						play = Play()
+						play.half = half
+						play.home_team = home_team
+						play.away_team = away_team
+						#Deal with half, home team, and away team#########
+
+						#Split the line into useful components:
+						play.home_play = cells[0].get_text()
+						play.away_play = cells[4].get_text()
+						#Split time into minutes and seconds:
+						time = cells[1].get_text().strip().split(":")
+						play.minute = int(time[0])
+						play.second = int(time[1])
+						#Split score into home and away
+						score = cells[2].get_text().strip().split("-")
+						if(len(score) > 1):
+							home_score = int(score[0])
+							away_score = int(score[1])
+						play.home_score = home_score
+						play.away_score = away_score
+						self.plays.append(play)
+
 			print "SUCCESS"
-		self.print_plays()
+			outfilename = filename.split(".")[0] + ".csv"
+			print "WRITING " + outfilename + "...",
+			self.print_plays(outfilename)
+			print "SUCCESS"
 	
-	def print_plays(self):
-		count = 0
+	#Print plays to a file:
+	def print_plays(self, filename):
+		file = open("data/"+filename,"w")
+		writer = csv.writer(file)
+		#Get the names of the object's variables and print them as a header row
+		keys = vars(self.plays[0]).keys()
+		writer.writerow(keys)
+		#For every play, print the variables in appropriate order
 		for play in self.plays:
-			print "Play " + str(count) + " happened at " + str(play.minute) + ":" + str(play.second)
-			print "The score was " + str(play.home_score) + " to " + str(play.away_score)
-			print "And here's what happened:"
-			print play.home_team + ":" + play.home_play + ";"
-			print play.away_team + ":" + play.away_play + ";\n"
-			count = count + 1
+			line_list = []
+			for key in keys:
+				line_list.append(str(vars(play)[key]))
+			writer.writerow(line_list)
+		file.close()
 
