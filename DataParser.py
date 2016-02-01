@@ -20,10 +20,11 @@ class Play:
 		
 class DataParser:
 	def parse(self):
-		for filename in os.listdir("data"):
+		os.makedirs("data/raw_plays")
+		for filename in os.listdir("data/html"):
 			self.plays = []
 			print "Parsing \"" + filename + "\"...",
-			file = open("data/"+filename)
+			file = open("data/html/"+filename)
 			filesoup = BeautifulSoup(file,"html.parser")
 			file.close()
 			
@@ -212,7 +213,7 @@ class DataParser:
 	
 	#Print plays to a file:
 	def print_plays(self, filename):
-		file = open("data/"+filename,"w")
+		file = open("data/raw_plays/"+filename,"w")
 		writer = csv.writer(file)
 		#Get the names of the object's variables and print them as a header row
 		keys = vars(self.plays[0]).keys()

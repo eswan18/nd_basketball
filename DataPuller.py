@@ -9,7 +9,7 @@ class DataPuller:
 		#Remove current data directory and replace with an empty one
 		if(os.path.exists("data")):
 			shutil.rmtree("data",ignore_errors=True)
-		os.makedirs("data")
+		os.makedirs("data/html")
 
 		for x in range(1, game_count + 1):
 			attempts = 0
@@ -22,7 +22,7 @@ class DataPuller:
 					url = "http://www.und.com/sports/m-baskbl/stats/2015-2016/"+game_name+".html"
 					response = urllib2.urlopen(url)
 					content = response.read()
-					f = open("data/"+game_name+".html",'w')
+					f = open("data/html/"+game_name+".html",'w')
 					f.write(content)
 					f.close()
 					print "SUCCESS"
@@ -53,4 +53,4 @@ class DataPuller:
 
 if __name__ == "__main__":
 	dataPuller = DataPuller()
-	dataPuller.pull(19)
+	dataPuller.pull(21)
