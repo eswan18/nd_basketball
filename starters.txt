@@ -1,0 +1,31 @@
+advo3.csv
+1: ['Zach Auguste', 'Steve Vasturia', 'Bonzie Colson', 'Demetrius Jackson', 'V.J. Beachem', 'Matt Ryan']
+2: ['Bonzie Colson', 'Zach Auguste', 'Demetrius Jackson', 'V.J. Beachem', 'Steve Vasturia']
+Errors: 1st half, Matt Ryan
+
+game-01.csv
+1: ['Zach Auguste', 'Bonzie Colson', 'V.J. Beachem', 'Steve Vasturia', 'Demetrius Jackson']
+2: ['Zach Auguste', 'V.J. Beachem', 'Demetrius Jackson', 'Bonzie Colson', 'Steve Vasturia', 'Matt Ryan']
+Errors: 2nd half, (small) Matt Ryan is subbed out at 3:53 and then has a foul called on him at 3:51 
+
+game-21.csv
+1: ['A.J. Burgett', 'V.J. Beachem', 'Demetrius Jackson', 'Steve Vasturia', 'Zach Auguste', 'Bonzie Colson']
+2: ['A.J. Burgett', 'Demetrius Jackson', 'V.J. Beachem', 'Steve Vasturia', 'Zach Auguste']
+Errors: (small) first half, Colson gets rebound at 15:34 and is subbed in after at 15:34
+
+game-16.csv
+1: ['Zach Auguste', 'Demetrius Jackson', 'Steve Vasturia', 'Matt Ryan', 'V.J. Beachem', 'Bonzie Colson']
+2: ['Zach Auguste', 'Matt Ryan', 'Demetrius Jackson', 'Steve Vasturia', 'V.J. Beachem']
+Errors: first half, Colson is subbed out at 3:19 but then misses a layup and takes free throws, before being subbed in again at 0:04
+ 
+advo7.csv
+1: ['Zach Auguste', 'Demetrius Jackson', 'Bonzie Colson', 'Steve Vasturia', 'V.J. Beachem', 'Matt Farrell']
+2: ['Demetrius Jackson', 'Steve Vasturia', 'Bonzie Colson', 'Zach Auguste', 'V.J. Beachem']
+Errors: first half, Matt Farrell is subbed out at 9:55 and then takes a 3 at 9:44
+
+
+game-18.csv
+1: ['Matt Ryan', 'Zach Auguste', 'Demetrius Jackson', 'Steve Vasturia', 'V.J. Beachem']
+2: ['Matt Ryan', 'Zach Auguste', 'V.J. Beachem', 'Steve Vasturia', 'Demetrius Jackson', 'Bonzie Colson']
+Errors: (small) 2nd half, Colson is subbed out at 4:35, gets a rebound at 4:28, is subbed in at 4:28
+2nd half, Beginning is a mess. Two players (Colson and Torres) are subbed in, while only one (Ryan) is subbed out. Also, the Torres sub is listed as happening at 0:00 instead of 20:00

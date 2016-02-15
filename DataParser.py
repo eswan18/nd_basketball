@@ -226,3 +226,7 @@ class DataParser:
 			writer.writerow(line_list)
 		file.close()
 
+if __name__ == '__main__':
+	dataParser = DataParser()
+	dataParser.parse()
+

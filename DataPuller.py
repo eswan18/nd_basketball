@@ -7,8 +7,8 @@ import os
 class DataPuller:
 	def pull(self,game_count = 1):
 		#Remove current data directory and replace with an empty one
-		if(os.path.exists("data")):
-			shutil.rmtree("data",ignore_errors=True)
+		#if(os.path.exists("data")):
+		#	shutil.rmtree("data",ignore_errors=True)
 		os.makedirs("data/html")
 
 		for x in range(1, game_count + 1):
@@ -46,11 +46,11 @@ class DataPuller:
 			return "xroadg-1"
 		if(x == 17):
 			return "du0116"
-		#if(x == 18):
-			
+		if(x == 24):
+			return "gamebookcu0208"	
 		return "game-"+str(x).zfill(2)
 
 
 if __name__ == "__main__":
 	dataPuller = DataPuller()
-	dataPuller.pull(21)
+	dataPuller.pull(25)
